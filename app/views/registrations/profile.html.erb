@@ -1,0 +1,52 @@
+<p style="color: green"><%= notice %></p>
+<div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+  <div class="flex justify-center rounded bg-orange-100 p-4">
+    <% if @user.phone.present? && @user.birth_date.present? %>
+      <%= image_tag(url_for(@user.qrcode), size: '200x200') %>
+    <% else %>
+      <%= render "form" %>
+    <% end %>
+  </div>
+  <div class="rounded bg-orange-100 p-4 w-full">
+    <p class="font-bold"><%= @user.first_name + " " + @user.last_name %></p>
+    <p class="font-bold">Status: <%= @user.status_label %></p>
+    <p>Phone: <%= @user.phone %></p>
+    <p>Email: <%= @user.email %></p>
+    <p>Active Date: <%= @user.active_date %></p>
+    <p>Expireed Date: <%= @user.expired_date %></p>
+    <p>Last Check-in: <%= @user.reports.present? ? @user.reports.last.created_at : "-" %></p>
+    <% if @user.status == false %>
+      <div class="flex justify-center text-orange-100 rounded rounded-full bg-orange-600 hover:bg-orange-700">
+        Active Now
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% if @user.otp_required_for_sign_in? %>
+  <div><%= link_to "Recovery Codes", two_factor_authentication_profile_recovery_codes_path %></div>
+<% end %>
+
+
+<%= turbo_stream_from "u#{ @user.id }report-list" %>
+<div class="w-full max-w-full">
+  <table class="w-full mt-4">
+  <thead>
+    <tr class="bg-orange-600 text-orange-100"> 
+      <th class="p-2 md:p-4 rounded-tl-lg">Name</th>
+      <th class="p-2 md:p4">Time</th>
+      <th class="p-2 md:p-4">Partner</th>
+      <th class="p-2 md:p-4">Status</th>
+      <th class="p-2 md:p-4">Point</th>
+      <th class="p-2 md:p-4 rounded-tr-lg">Action</th>
+    </tr>
+  </thead>
+  <tbody id="u<%= @user.id %>report-list">
+    <% @reports.each do |report| %>
+      <%= render "reports/report", report: report %>
+    <% end %>
+  </tbody>     
+</table> 
+</div>
+
+

@@ -1,0 +1,26 @@
+<%= form_with model: @report, url: reports_path, local: true, id: "report-form" do |form| %>
+  <% if @report.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
+
+      <ul>
+        <% @report.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :member, "Member ID" %>
+    <%= form.password_field :user_id, autofocus: true, class:"mb-4", autocomplete:"off" %>
+  </div>
+
+  <div class="flex flex-col space-y-4">
+    <%= form.button "Scan Member", type: "submit", class: "mt-4 mb-4 w-full sm:mt-0 sm:col-start-1 bg-gray-100 hover:bg-orange-600 hover:text-orange-100 rounded-sm px-4 py-2" %>
+
+    <button data-action="click->modal#close" class="mt-3 w-full sm:mt-0 sm:col-start-1 mb-4 bg-gray-100 hover:bg-orange-600 hover:text-orange-100 rounded-sm px-4 py-2">
+      Cancel
+    </button>
+  </div>
+<% end %>

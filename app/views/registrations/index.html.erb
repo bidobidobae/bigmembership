@@ -1,0 +1,50 @@
+<div class="w-full max-w-full">
+    <%= search_form_for @q, class: "w-full flex bg-white px-2" do |f| %>
+      <div class="md:flex md:items-center md:w-2/5">
+        <div class="">
+          <%= f.label :user, class:"block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" %>
+        </div>
+        <div class="">
+          <%= f.search_field :first_name_or_last_name_or_phone_or_email_cont, class: "bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-orange-600" %>  
+        </div>
+      </div>
+      
+      <div class="md:flex md:items-center md:w-2/5">
+        <div class="">
+          <%= f.label :active_eq, class:"block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" %>
+        </div>
+        <div class="">
+          <%= f.select :status_eq, [true, false], { include_blank: true }, class: "block appearance-none w-full bg-gray-200 border-2 border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-orange-600" %>
+        </div>
+      </div>
+
+      <div class="md:flex md:w-1/5 md:items-center">
+        <div class="pt-4 w-full">
+          <%= f.submit class: 'rounded-lg text-orange-100 mt-3 w-full sm:mt-0 sm:col-start-1 mb-4 bg-orange-600 hover:bg-orange-700 rounded-sm px-4 py-2'%>
+        </div>
+      </div>
+    <% end %>
+    
+  <table class="w-full mt-2">
+    <thead class="rounded bg-orange-600 text-orange-100">
+      <tr>
+        <th class="rounded-tl-lg text-left px-4 py-2"><%= sort_link(@q, :first_name, default_order: :desc) %></th>
+        <th class="text-left px-2 py-2"><%= sort_link(@q, :last_name, default_order: :desc) %></th>
+        <th class="text-left px-2 py-2"><%= sort_link(@q, :phone, default_order: :desc) %></th>
+        <th class="text-left px-2 py-2"><%= sort_link(@q, :email, default_order: :desc) %></th>
+        <th class="text-left px-2 py-2"><%= sort_link(@q, :status, default_order: :desc) %></th>
+        <th class="text-left px-2 py-2"><%= sort_link(@q, :active_date, default_order: :desc) %></th>
+        <th class="text-left px-2 py-2"><%= sort_link(@q, :expired_date, default_order: :desc) %></th>
+        <th class="text-left px-2 py-2"><%= sort_link(@q, :point, default_order: :desc) %></th>
+        <th class="rounded-tr-lg text-left px-2 py-2">Action</th>
+      </tr>
+    </thead>
+    <tbody id="user-list">
+      <% @users.each do |user| %>
+          <%= render 'registrations/user', user: user %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+

@@ -1,0 +1,2 @@
+<%= turbo_stream.replace @user, partial: "registrations/user", locals: {user: @user}%>
+<%= turbo_stream.dispatch_event "modalClose" %>

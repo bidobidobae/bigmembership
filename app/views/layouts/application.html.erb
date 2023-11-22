@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bigmembership</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+
+  <body data-controller="modal" data-action="modalClose@window->modal#close" class="bg-slate-100">
+
+    <div class="sticky top-0 z-10" data-controller="dropdown" data-action="resize@window->dropdown#closeOnBigScreen">
+      <nav class="flex justify-between w-full font-bold bg-orange-600 p-4 text-orange-100 space-x-4 items-center h-10">
+        <div>
+          <%= link_to "Logo", root_path %>
+        </div>
+        <div class="flex space-x-2">
+          <% if Current.session.present?%>
+            <div>
+              <%= Current.user.email %>
+            </div>
+          <% end %>
+          <div class="md:hidden" role="button" data-action="click->dropdown#toggle">
+            &#9776; 
+          </div>
+        </div>
+      </nav>
+
+      <nav class="flex flex-col p-4 bg-stone-800 text-orange-100 absolute w-full max-h-60 overflow-y-auto" data-dropdown-target="content">
+        <% if Current.session.present? %> 
+          <%= button_to Current.session, method: :delete, class: "flex gap-2 items-center" do %>
+            <%= inline_svg_tag "arrow-right-on-rectangle.svg", class: "h-5 w-5 text-pink-600 stroke-current" %>
+            Logout
+          <% end %>
+          <%= link_to edit_password_path, class: "flex gap-2 items-center" do %>
+            <%= inline_svg_tag "lock-open.svg", class: "h-5 w-5 text-pink-600 stroke-current" %>
+            Change Password
+          <% end %>
+          <%= link_to edit_identity_email_path, class: "flex gap-2 items-center" do %>
+            <%= inline_svg_tag "envelope.svg", class: "h-5 w-5 text-pink-600 stroke-current" %>
+            Change Email 
+          <% end %>
+          <% if Current.user.role == "admin" %>
+            <%= link_to "Devices & Sessions", sessions_path %>
+            <%= link_to "Users Activation", users_path %>
+          <% end %>
+        <% else %>
+          <%= link_to sign_in_path, class: "flex gap-2 items-center" do %>
+            <%= inline_svg_tag "arrow-left-on-rectangle.svg", class: "h-5 w-5 text-pink-600 stroke-current" %>
+            Login 
+          <% end %>
+          <%= link_to sign_up_path, class: "flex gap-2 items-center" do %>
+            <%= inline_svg_tag "user-plus.svg", class: "h-5 w-5 text-pink-600 stroke-current" %>
+            Sign Up
+          <% end %>
+        <% end %>
+      </nav>
+    </div>
+    <div class="flex">
+      <nav class="bg-stone-800 text-orange-100 w-1/6 p-4 hidden md:flex flex-col sticky top-10 h-[calc(100vh-40px)]">
+        <% if Current.session.present? %> 
+          <%= button_to Current.session, method: :delete, class: "flex gap-2 items-center" do %>
+            <%= inline_svg_tag "arrow-right-on-rectangle.svg", class: "h-5 w-5 text-pink-600 stroke-current" %>
+            Logout
+          <% end %>
+          <%= link_to edit_password_path, class: "flex gap-2 items-center" do %>
+            <%= inline_svg_tag "lock-open.svg", class: "h-5 w-5 text-pink-600 stroke-current" %>
+            Change Password
+          <% end %>
+          <%= link_to edit_identity_email_path, class: "flex gap-2 items-center" do %>
+            <%= inline_svg_tag "envelope.svg", class: "h-5 w-5 text-pink-600 stroke-current" %>
+            Change Email 
+          <% end %>
+          <% if Current.user.role == "admin" %>
+            <%= link_to sessions_path, class: "flex gap-2 items-center" do %>
+              <%= inline_svg_tag "clock.svg", class: "h-5 w-5 text-pink-600 stroke-current" %>
+              Devices & Sessions
+            <% end %>
+            <%= link_to users_path, class: "flex gap-2 items-center" do %>
+              <%= inline_svg_tag "shield-check.svg", class: "h-5 w-5 text-pink-600 stroke-current" %>
+              Users Activation
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= link_to sign_in_path, class: "flex gap-2 items-center" do %>
+            <%= inline_svg_tag "arrow-left-on-rectangle.svg", class: "h-5 w-5 text-pink-600 stroke-current" %>
+            Login 
+          <% end %>
+          <%= link_to sign_up_path, class: "flex gap-2 items-center" do %>
+            <%= inline_svg_tag "user-plus.svg", class: "h-5 w-5 text-pink-600 stroke-current" %>
+            Sign Up 
+          <% end %>
+        <% end %>
+      </nav>
+      <main class="grow bg-slate-100 pt-4 px-4 w-5/6 pb-16">
+        <%= yield %>
+        <%= render "shared/modal" %>
+      </main>
+    </div>
+    <% if Current.session.present? %>
+      <div class="bg-gray-100 w-full h-18 px-6 py-2 flex justify-between text-orange-600 fixed bottom-0 shadow-lg z-40 border-t border-gray-99">
+        <%= link_to root_path do %>
+          <span class="group rounded-lg px-2 py-1 cursor-pointer hover:bg-orange-600 hover:text-orange-100 text-sm flex flex-col items-center text-center">
+            <%= inline_svg_tag "home.svg", class:"h-5 w-5 text-orange-600 stroke-current group-hover:text-orange-100" %>
+            <span class="mx-1 font-roboto">Home</span>
+          </span>
+        <% end %>
+        <% if Current.user.role == "admin" %>
+          <%= link_to  new_report_path, data: { action: "click->modal#open", turbo_stream: "" } do %>
+            <span class="group rounded-lg px-2 py-1 cursor-pointer hover:bg-orange-600 hover:text-orange-100 text-sm flex flex-col items-center text-center">
+              <%= inline_svg_tag "bolt.svg", class:"h-5 w-5 text-orange-600 stroke-current group-hover:text-orange-100" %>
+              <span class="mx-1 font-roboto">Scan</span>
+            </span>
+          <% end %>
+        <% else %>
+          <%= link_to  root_path do %>
+            <span class="group rounded-lg px-2 py-1 cursor-pointer hover:bg-orange-600 hover:text-orange-100 text-sm flex flex-col items-center text-center">
+              <%= inline_svg_tag "envelope.svg", class:"h-5 w-5 text-orange-600 stroke-current group-hover:text-orange-100" %>
+              <span class="mx-1 font-roboto">Booking</span>
+            </span>
+          <% end %>
+        <% end %>
+        <%= link_to root_path do %>
+          <span class="group rounded-lg px-2 py-1 cursor-pointer hover:bg-orange-600 hover:text-orange-100 text-sm flex flex-col items-center text-center">
+            <%= inline_svg_tag "shop.svg", class:"h-5 w-5 text-orange-600 stroke-current group-hover:text-orange-100" %>
+            <span class="mx-1 font-roboto">Redeem</span>
+          </span>
+        <% end %>
+      </div>   
+    <% end %>
+  </body>
+</html>

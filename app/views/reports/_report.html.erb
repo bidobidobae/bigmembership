@@ -1,0 +1,12 @@
+<tr class="bg-white" id="<%= dom_id report %>">
+    <td class="border-grey-light border hover:bg-gray-100 px-2 py-1"><%= report.name %></td>
+    <td class="border-grey-light border hover:bg-gray-100 px-2 py-1"><%= report.created_at.in_time_zone('Jakarta').strftime("%A, %m/%d/%Y, %I:%M%p") %></td>
+    <td class="border-grey-light border hover:bg-gray-100 px-2 py-1"><%= report.partner %></td>
+    <td class="border-grey-light border hover:bg-gray-100 px-2 py-1"><%= report.user.status_label %></td>
+    <td class="border-grey-light border hover:bg-gray-100 px-2 py-1">
+      <div id="<%= dom_id report.user %>_point">
+        <%= render "registrations/point", user: report.user %>
+      </div>
+    </td>
+    <td class="border-grey-light border hover:bg-gray-100 px-2 py-1 text-red-400 hover:text-red-600 hover:font-medium cursor-pointer"><%= link_to "Show", report  %></td>
+</tr>

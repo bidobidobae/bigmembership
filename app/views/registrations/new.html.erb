@@ -1,0 +1,59 @@
+<div class="flex justify-center">
+  <div class="w-full max-w-xs">
+    <h1 class="font-bold text-orange-600">Sign up</h1>
+
+    <%= form_with(url: sign_up_path, class: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
+      <% if @user.errors.any? %>
+        <div style="color: red">
+          <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+          <ul>
+            <% @user.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div>
+        <%= form.label :email, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= form.email_field :email, value: @user.email, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", required: true, autofocus: true, autocomplete: "email" %>
+      </div>
+
+      <div>
+        <%= form.label :first_name, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= form.text_field :first_name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", required: true, autocomplete: "first name" %>
+      </div>
+
+      <div>
+        <%= form.label :last_name, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= form.text_field :last_name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", required: true, autocomplete: "last name" %>
+      </div>
+
+      <div>
+        <%= form.label :phone, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= form.text_field :phone, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", required: true, autocomplete: "phone" %>
+      </div>
+
+      <div>
+        <%= form.label :birth_date, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= form.date_field :birth_date, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", required: true, autocomplete: "phone" %>
+      </div>
+
+      <div>
+        <%= form.label :password_12_characters_minimum, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= form.password_field :password, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", required: true, autocomplete: "new-password" %>
+      </div>
+
+      <div>
+        <%= form.label :password_confirmation, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= form.password_field :password_confirmation, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", required: true, autocomplete: "new-password" %>
+      </div>
+
+      <div class="flex justify-center">
+        <%= form.submit "Sign up", class:"bg-orange-600 hover:bg-orange-700 mt-4 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+      </div>
+    <% end %>   
+  </div>
+</div>
+
